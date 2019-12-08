@@ -1,8 +1,42 @@
 <!-- Search form -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
   integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-<div class="container-fluid">
   <br />
+  <div class="container">
+      <div class="row justify-content-center"> 
+          <!-- <div class="col col-lg-4">
+              <button type="button" class="btn btn-info btn-sm">Small button</button>
+          </div>
+          <div class="col">
+              <button type="button" class="btn btn-secondary btn-sm">Small button</button>
+          </div> -->
+          <!-- <div class="col">
+              1 of 3
+            </div>
+            <div class="col">
+              Variable width content
+            </div>
+            <div class="col">
+              3 of 3
+            </div> -->
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <!-- <button type="button" #topicsMode class="btn btn-secondary" (click)="changeMode('topics')">Topics</button> -->
+                <div *ngIf="mode=='topics'; then topicsSelected else noTopics"></div>
+                <ng-template #topicsSelected><button type="button" class="btn btn-info">Topics</button></ng-template>
+                <ng-template #noTopics><button type="button" class="btn btn-secondary" (click)="changeMode('topics')">Topics</button></ng-template>
+
+                <div *ngIf="mode=='hashtags'; then hashtagsSelected else noHashtags"></div>
+                <ng-template #hashtagsSelected><button type="button" class="btn btn-info">HashTags</button></ng-template>
+                <ng-template #noHashtags><button type="button" class="btn btn-secondary" (click)="changeMode('hashtags')">HashTags</button></ng-template>
+
+                <div *ngIf="mode=='user'; then userSelected else noUser"></div>
+                <ng-template #userSelected><button type="button" class="btn btn-info">User</button></ng-template>
+                <ng-template #noUser><button type="button" class="btn btn-secondary" (click)="changeMode('user')">User</button></ng-template>
+
+            </div>
+      </div>
+  </div>
+<div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8">
       <form class="card card-sm">

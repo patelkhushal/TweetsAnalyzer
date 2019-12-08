@@ -11,12 +11,13 @@ export class AppComponent implements OnInit {
 
   selected_topics
   search_input
+  mode
   constructor(private global: Global ) { 
   }
 
   ngOnInit() {
     this.selected_topics = this.global.selected_topics
-    console.log(this.selected_topics)
+    this.mode = this.global.mode
   }
 
   submit_button_clicked(){
@@ -28,6 +29,11 @@ export class AppComponent implements OnInit {
 
   delete_topic(topic){
     this.selected_topics.delete(topic)
+  }
+
+  changeMode(mode){
+    this.global.mode = mode
+    this.mode = mode
   }
 
 }

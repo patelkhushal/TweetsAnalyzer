@@ -4,7 +4,7 @@ import sys
 import time   
 
 # import function make_profile from local python file to process twitter user id
-from twitter_api import make_profile
+from user_profile_builder import make_profile
   
 # Create a socket object 
 s = socket.socket()   
