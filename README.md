@@ -294,4 +294,17 @@ This script is the brain of data processing. It is responsible for analyzing twe
 
 The script will determines user's frequent hashtags, topics that he/she generally tweets about and sentiments (positive or negative) for each of those topics. It will save the results in a redis database
 
+# WebApp
+We decided to build Web Application to visualize User Profiles and provide flexibility i.e, have different option available for user when searching through different user profiles
+
+## Back End
+WebApp back end processing is handled by `express_app`. This app uses express js web framework as its back end processing
+
+The main file that handles all the requests from the front end is `index.js` file in `express_app`.
+
+This file is responsible for retreiving data from the database and building user profiles in json format so that the angular app in the front end can display it.
+
+## Front end
+Front end of the web application is built using Angular 8. Angular related files are available in `angular-app` directory
+
 
