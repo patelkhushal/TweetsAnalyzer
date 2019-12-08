@@ -279,17 +279,20 @@ The back end data processing is done by python scripts in `data-processing` dire
 
 Following is the description of each of those scripts:
 
-#### twitter_app.py
+* #### twitter_app.py
+
 This python script is responsible for opening up communication channel between local and Twitter server using Twitter API
 
 `twiiter_app.py` listens for tweets in real time and sends the User Twitter object to `twitter_client.py` for processing. It will open up a socket channel to `twitter_client.py` and send Twitter user ids.
 
-#### twitter_client.py
+* #### twitter_client.py
+
 This script actively listens for data coming in from `twitter_app.py` through port `9009`. The data is string representation of Twitter User id
 
 After receiving the Twitter id, the script kicks off `make_profile` method from `user_profile_builder.py`. It will keep repeating the process of getting twitter user id and executing make_profile from user_profile_builder.py
 
-#### user_profile_builder.py
+* #### user_profile_builder.py
+
 This script is the brain of data processing. It is responsible for analyzing tweets from a user. It will build user profile by getting 3200 tweets of a user through Twitter API. It will then perform sentiment analysis on those tweets and get topics by leveraging sklearn tf-idf vectorizer.
 
 The script will determines user's frequent hashtags, topics that he/she generally tweets about and sentiments (positive or negative) for each of those topics. It will save the results in a redis database
