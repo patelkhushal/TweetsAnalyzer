@@ -3,14 +3,31 @@
 This project aims to analyze tweets from different users and profile them accordingly.
 <br />
 
-Twitter Profiler monitors tweets in real time and performs the following three tasks on each tweet:
-* determining frequent hashtags 
-* performing sentiment analysis to determine whether the tweet is positive or negative
-* identifying major topics of the tweet
+Twitter Profiler monitors tweets in real time and for every twitter user, does the following:
+
+* Obtain all the tweets of the user
+* Extract hashtags 
+* Perform Sentiment Analysis to determine whether the tweet is positive or negative
+* Identify major topics of the tweet
+
+This allows us to determine user trends, their likes, dislikes and things they tweet about more often. Sentiment Analysis also allows us to determine topics that user tweets negatively or positively.
 
 We use the Twitter API to interact with Twitter app in order to monitor users in certain regions for
 specific periods of time. Twitter Profiler would rank the top n topics and top m hashtags of each user.
 We aim to make these parameterized and configurable.
+
+## Technologies Used
+![](https://img.icons8.com/color/48/000000/python.png) ![](https://cdn4.iconfinder.com/data/icons/redis-2/1451/Untitled-2-48.png) ![](https://img.icons8.com/color/48/000000/angularjs.png) ![](https://img.icons8.com/color/48/000000/nodejs.png) ![](https://img.icons8.com/color/48/000000/twitter.png)
+
+### Back End Processing
+* <strong>Twitter API</strong>: To get tweets in real time
+* <strong>Python3</strong>: Uses pyspark, nltk, tweepy and sklearn libraries to perform sentiment analysis and calculate TF-IDF scores
+* <strong>Apache Spark (pyspark)</strong>: To perform real time analysis
+* <strong>Redis database</strong>: Non-relational (NoSql) database to save processed user profiles
+
+### Web Application
+* <strong>Express JS</strong>: This Web Framework acts as back end for the web application and handles requests from front end Angular application
+* <strong>Angular 8</strong>: Front End of the Web Applications. Allows user to visualize user profiles
 
 <details>
   <summary><strong>Prerequisites</strong></summary>
@@ -273,15 +290,38 @@ We aim to make these parameterized and configurable.
 
 </details>
 
-## How to Run
+# Back End Processing
 
-cd into the app directory:
+The back end data processing is done by python scripts in `data-processing` directory
 
-run on either terminal or cmd:
-`python twitter_app.py` or `python3 twitter_app.py` if you have python3 configured
-this will wait for client to connect
+Following is the description of each of those scripts:
 
-On another shell,
-run:
-```spark-submit spark_app.py```
+#### twitter_app.py
+This python script is responsible for opening up communication channel between local and Twitter server using Twitter API
+
+`twiiter_app.py` listens for tweets in real time and sends the User Twitter object to `twitter_client.py` for processing. It will open up a socket channel to `twitter_client.py` and send Twitter user ids.
+
+#### twitter_client.py
+This script actively listens for data coming in from `twitter_app.py` through port `9009`. The data is string representation of Twitter User id
+
+After receiving the Twitter id, the script kicks off `make_profile` method from `user_profile_builder.py`. It will keep repeating the process of getting twitter user id and executing make_profile from user_profile_builder.py
+
+#### user_profile_builder.py
+This script is the brain of data processing. It is responsible for analyzing tweets from a user. It will build user profile by getting 3200 tweets of a user through Twitter API. It will then perform sentiment analysis on those tweets and get topics by leveraging sklearn tf-idf vectorizer.
+
+The script will determines user's frequent hashtags, topics that he/she generally tweets about and sentiments (positive or negative) for each of those topics. It will save the results in a redis database
+
+# WebApp
+We decided to build Web Application to visualize User Profiles and provide flexibility i.e, have different option available for user when searching through different user profiles
+
+## Back End
+WebApp back end processing is handled by `express_app`. This app uses express js web framework as its back end processing
+
+The main file that handles all the requests from the front end is `index.js` file in `express_app`.
+
+This file is responsible for retreiving data from the database and building user profiles in json format so that the angular app in the front end can display it.
+
+## Front end
+Front end of the web application is built using Angular 8. Angular related files are available in `angular-app` directory
+
 
