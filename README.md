@@ -3,7 +3,7 @@
 This project aims to analyze tweets from different users and profile them accordingly.
 <br />
 
-Twitter Profiler monitors tweets in real time and for every twitter user profile and does the following
+Twitter Profiler monitors tweets in real time and for every twitter user, does the following:
 
 * Obtain all the tweets of the user
 * Extract hashtags 
