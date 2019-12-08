@@ -83,7 +83,7 @@ stream = Stream(auth, listener)
 
 # setup search terms
 track = ['crypto', 'ethereum', 'bitcoin', 'blockchain', 'cryptocurrency', 'btc', 'money', 'price', 'mining', 'litecoin', 'republican',
-         'gop', 'trump', 'vote', 'house', 'congress', 'senate', 'law', 'politicians', 'liberal', 'stem', 'computerscience',
+         'gop', 'trump', 'vote', 'house', 'congress', 'senate', 'law', 'politicians', 'liberal', 'stem', 'computer science',
          'javascript', 'django', 'webapps', 'mobileapps', 'software', 'apple', 'iphone', 'iphonex', 'macbook', 'ios', 'macos', 'siri', 'imac',
          'applemusic', 'itunes', 'stevejobs', 'timcook', 'technology', 'innovation', 'future', 'cloud', 'tech', 'facebook', 'google', 'iot', 'app',
          'career', 'marvel', 'dc', 'superman', 'batman', 'avengers', 'justiceleague', 'spiderman', 'superhero', 'superheroes', 'wonder woman', 'blackwidow',
@@ -93,7 +93,8 @@ track = ['crypto', 'ethereum', 'bitcoin', 'blockchain', 'cryptocurrency', 'btc',
          'mathematics', 'AI', 'Engineering', 'Computer', 'IT', 'Nanotechnology', 'NASA', 'Sputnik', 'space', 'astronomy', 'programming', 'java',
          'python', 'ruby', 'c', 'c++', 'javascript', 'js', 'angular', 'reactjs', 'vuejs', 'golang', 'tesla', 'elon musk', 'iot', 'google home', 'alexa'
          'car', 'cars', 'honda', 'toyota', 'chevrolet', 'chevy', 'sedan', 'suv', 'sports', 'nissan', 'football', 'blue jays', 'cn tower', 'health', 'lifestyle'
-         'dog', 'puppy', 'corporate', 'walmart', 'costco', 'toronto', 'canada', 'downtown toronto', 'downtown']
+         'dog', 'puppy', 'corporate', 'walmart', 'costco', 'toronto', 'canada', 'downtown toronto', 'downtown', 'trudeau', 'amazon', 'jeff bezos','iron man',
+          'cnn', 'bbc', 'news', 'laptop', 'macbook', 'mac', 'oneplus', 'iphone', 'huawei', 'lg', 'samsung', 'phone']
 language = ['en']
 
 # get filtered tweets, forward them to spark until interrupted

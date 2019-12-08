@@ -1,0 +1,89 @@
+<!-- <p>home works!</p>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
+<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3" *ngFor="let profile of this.user_profiles; let i = index">
+                <div class="card mt-5 zoom" (click)="detailedUserProfile(profile.id)">
+                    <div class="card-header bg-info">
+                        <h5 class="text-white">{{profile.name}}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="box box-info">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div align="center">
+                                            <img alt="User Pic"
+                                                src={{profile.profile_image_url_https}}
+                                                class="rounded-circle img-fluid profile-image">
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="text-info">@{{profile.screen_name}} </h6>
+                                        Followers:  {{profile.friends_count}}
+                                        Following: {{profile.followers_count}}
+                                        <!-- <span *ngIf="profile.location != ''">{{profile.location}}</span> -->
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <hr style="margin:5px 0 5px 0;">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="title text-info">Frequent HashTags</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div *ngFor="let hashtag of profile.hashtags | keyvalue: originalOrder">
+                                            #{{hashtag.key}}
+                                            <div class="clearfix"></div>
+                                            <div class="bot-border"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <span class="title text-info">Interests</span>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div *ngFor="let all_topic of profile.all_topics | keyvalue: originalOrder">
+                                            {{all_topic.key}}
+                                            <div class="clearfix"></div>
+                                            <div class="bot-border"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr style="margin:5px 0 5px 0;">
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="title text-info">Positive Sentiments</span>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div *ngFor="let positive_topic of profile.positive_topics | keyvalue: originalOrder">
+                                            {{positive_topic.key}}
+                                            <div class="clearfix"></div>
+                                            <div class="bot-border"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="title text-info">Negative Sentiments</div>
+                                        <div class="clearfix"></div>
+                                        <div class="bot-border"></div>
+                                        <div *ngFor="let negative_topic of profile.negative_topics | keyvalue: originalOrder">
+                                            {{negative_topic.key}}
+                                            <div class="clearfix"></div>
+                                            <div class="bot-border"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="bot-border"></div>
+                                <!-- /.box-body -->
+                            </div>
+                            <!-- /.box -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

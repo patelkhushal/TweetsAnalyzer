@@ -16,6 +16,11 @@ input.hidden {
     border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0
 }	
 
+.zoom:hover {
+    transform: scale(1.08); 
+    cursor: pointer;
+  }
+
 @media (max-width: 767px) {
     .col-lg-3 {
         margin-top:20px;

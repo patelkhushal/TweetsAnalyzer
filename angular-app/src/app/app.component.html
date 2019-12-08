@@ -3,36 +3,21 @@
   integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <br />
   <div class="container">
-      <div class="row justify-content-center"> 
-          <!-- <div class="col col-lg-4">
-              <button type="button" class="btn btn-info btn-sm">Small button</button>
-          </div>
-          <div class="col">
-              <button type="button" class="btn btn-secondary btn-sm">Small button</button>
-          </div> -->
-          <!-- <div class="col">
-              1 of 3
-            </div>
-            <div class="col">
-              Variable width content
-            </div>
-            <div class="col">
-              3 of 3
-            </div> -->
-            <div class="btn-group" role="group" aria-label="Basic example">
+      <div class="row">
+          <div class="col col-lg-4 pl-4"><button type="button" #topicsMode class="btn btn-info">Reset</button></div>
+            <div class="col col-lg-4 btn-group" role="group" aria-label="Basic example">
                 <!-- <button type="button" #topicsMode class="btn btn-secondary" (click)="changeMode('topics')">Topics</button> -->
-                <div *ngIf="mode=='topics'; then topicsSelected else noTopics"></div>
+                <div *ngIf="this.global.mode=='topics'; then topicsSelected else noTopics"></div>
                 <ng-template #topicsSelected><button type="button" class="btn btn-info">Topics</button></ng-template>
-                <ng-template #noTopics><button type="button" class="btn btn-secondary" (click)="changeMode('topics')">Topics</button></ng-template>
+                <ng-template #noTopics><button type="button" class="btn btn-secondary" (click)="changeMode('topics', this.global.selected_topics)">Topics</button></ng-template>
 
-                <div *ngIf="mode=='hashtags'; then hashtagsSelected else noHashtags"></div>
+                <div *ngIf="this.global.mode=='hashtags'; then hashtagsSelected else noHashtags"></div>
                 <ng-template #hashtagsSelected><button type="button" class="btn btn-info">HashTags</button></ng-template>
-                <ng-template #noHashtags><button type="button" class="btn btn-secondary" (click)="changeMode('hashtags')">HashTags</button></ng-template>
+                <ng-template #noHashtags><button type="button" class="btn btn-secondary" (click)="changeMode('hashtags', this.global.selected_hashtags)">HashTags</button></ng-template>
 
-                <div *ngIf="mode=='user'; then userSelected else noUser"></div>
+                <div *ngIf="this.global.mode=='user'; then userSelected else noUser"></div>
                 <ng-template #userSelected><button type="button" class="btn btn-info">User</button></ng-template>
                 <ng-template #noUser><button type="button" class="btn btn-secondary" (click)="changeMode('user')">User</button></ng-template>
-
             </div>
       </div>
   </div>
@@ -46,11 +31,15 @@
           </div>
           <!--end of col-->
           <div class="col">
-            <input [(ngModel)]="search_input" name="input_search" (keyup.enter)="submit_button_clicked()" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" >
+            <input *ngIf="this.global.mode=='topics';" [(ngModel)]="search_input" name="input_search" (keyup.enter)="submit_button_clicked(this.global.selected_topics)" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics" >
+            <input *ngIf="this.global.mode=='hashtags';" [(ngModel)]="search_input" name="input_search" (keyup.enter)="submit_button_clicked(this.global.selected_hashtags)" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search hashtags" >
+            <input *ngIf="this.global.mode=='user';" [(ngModel)]="search_input" name="input_search" (keyup.enter)="submit_button_clicked()" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search for a user" >
           </div>
           <!--end of col-->
           <div class="col-auto">
-            <button class="btn btn-lg btn-info" type='button' (click)="submit_button_clicked()">Search</button>
+            <button *ngIf="this.global.mode=='topics';" class="btn btn-lg btn-info" type='button' (click)="submit_button_clicked(this.global.selected_topics)">Search</button>
+            <button *ngIf="this.global.mode=='hashtags';" class="btn btn-lg btn-info" type='button' (click)="submit_button_clicked(this.global.selected_hashtags)">Search</button>
+            <button *ngIf="this.global.mode=='user';" class="btn btn-lg btn-info" type='button' (click)="submit_button_clicked()">Search</button>
           </div>
           <!--end of col-->
         </div>
@@ -60,14 +49,24 @@
   </div>
   <br>
   <div id="serach_terms_container" class="row justify-content-center">
-    <div *ngFor="let item of this.selected_topics" class="col-xs ml-2 align-self-center card text-white bg-info mb-3" style="display:inline-block;" (mouseover)="close_button.style.display='block'" (mouseout)="close_button.style.display='none'">
-      <!-- <div class='ml-2'> -->
+    <div *ngIf="this.global.mode == 'topics'">
+      <div *ngFor="let item of this.global.selected_topics" class="col-xs ml-2 align-self-center card text-white bg-info mb-3" style="display:inline-block;" (mouseover)="close_button.style.display='block'" (mouseout)="close_button.style.display='none'">
       <span class="card-body">{{item}}</span>
-      <button #close_button type="button" class="close" aria-label="Close" style="font-size: 15px;display: none;" (click)="delete_topic(item)">
+      <button #close_button type="button" class="close" aria-label="Close" style="font-size: 15px;display: none;" (click)="delete_topic(item, this.global.selected_topics)">
         <span aria-hidden="true">&times;</span>
       </button>
       </div>
-    <!-- </div> -->
+    </div>
+
+    <div *ngIf="this.global.mode == 'hashtags'">
+        <div *ngFor="let item of this.global.selected_hashtags" class="col-xs ml-2 align-self-center card text-white bg-info mb-3" style="display:inline-block;" (mouseover)="close_button.style.display='block'" (mouseout)="close_button.style.display='none'">
+        <span class="card-body">{{item}}</span>
+        <button #close_button type="button" class="close" aria-label="Close" style="font-size: 15px;display: none;" (click)="delete_topic(item, this.global.selected_hashtags)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+      </div>
+
   </div>
 </div>
 <router-outlet></router-outlet>

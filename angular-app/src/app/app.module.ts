@@ -8,18 +8,24 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { QueryProfilesComponent } from './query-profiles/query-profiles.component';
 
 const urlMap: Routes =
   [
     { path: '', redirectTo: '/home', pathMatch: "full" },
     { path: 'home', component: HomeComponent },
+    { path: 'user-profile', component: UserProfileComponent },
+    { path: 'query-profiles', component: QueryProfilesComponent },
 
   ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    UserProfileComponent,
+    QueryProfilesComponent
   ],
   imports: [
     BrowserModule,

@@ -23,8 +23,9 @@ redis_client.on("error", function (err) {
     console.log("Error " + err);
 });
 
-function getSortedSet(key, callback) {
-    redis_client.zrevrange(key, 0, 4, 'withscores', function (err, data) {
+//returns top n values stored at key
+function getSortedSet(key, n, callback) {
+    redis_client.zrevrange(key, 0, n, 'withscores', function (err, data) {
         if (err) throw err;
         else {
             let json_object = {};
@@ -43,13 +44,47 @@ function getKey(key, callback) {
     });
 }
 
-function buildUserProfiles(redis_id_keys, callback) {
+function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
     let random_user_profiles = []
     async.forEach(redis_id_keys, function (id_key, inner_callback) {
         let user_profile_json = {}
-        let id = id_key.split("_")[0]
-        user_profile_json["id"] = id
+        let id
+        let screen_name
+        if(id_passed){
+            id = id_key.split("_")[0]
+            user_profile_json["id"] = id
+        }
+        else{
+            screen_name = id_key
+        }
         async.waterfall([
+            function(callback){
+                if(screen_name){
+                    redis_client.keys('*_screen_name', function (err, keys) {
+                        if (err) throw err;
+                        async.forEach(keys, function(key, inner_callback){
+                            redis_client.get(key, function(err, data){
+                                if(data == screen_name){
+                                    id = key.split("_")[0]
+                                }
+                                inner_callback(null)
+                            })
+        
+                        }, function (err) {
+                            if (err) {
+                                throw err
+                            } else {
+                                user_profile_json["id"] = id
+                                callback(null)
+                            }
+                        });
+                        // id = keys[0].split("_")[0]
+                    });
+                }
+                else{
+                    callback(null)
+                }
+            },
             function (callback) {
                 getKey(id + "_name", function (err, data) {
                     user_profile_json["name"] = data
@@ -59,6 +94,12 @@ function buildUserProfiles(redis_id_keys, callback) {
             function (callback) {
                 getKey(id + "_screen_name", function (err, data) {
                     user_profile_json["screen_name"] = data
+                    callback(null)
+                })
+            },
+            function (callback) {
+                getKey(id + "_profile_url", function (err, data) {
+                    user_profile_json["profile_url"] = data
                     callback(null)
                 })
             },
@@ -87,25 +128,25 @@ function buildUserProfiles(redis_id_keys, callback) {
                 })
             },
             function (callback) {
-                getSortedSet(id + "_hashtags", function (err, data) {
+                getSortedSet(id + "_hashtags", n, function (err, data) {
                     user_profile_json["hashtags"] = data
                     callback(null)
                 })
             },
             function (callback) {
-                getSortedSet(id + "_positive_topics", function (err, data) {
+                getSortedSet(id + "_positive_topics", n, function (err, data) {
                     user_profile_json["positive_topics"] = data
                     callback(null)
                 })
             },
             function (callback) {
-                getSortedSet(id + "_negative_topics", function (err, data) {
+                getSortedSet(id + "_negative_topics", n, function (err, data) {
                     user_profile_json["negative_topics"] = data
                     callback(null)
                 })
             },
             function (callback) {
-                getSortedSet(id + "_all_topics", function (err, data) {
+                getSortedSet(id + "_all_topics", n, function (err, data) {
                     user_profile_json["all_topics"] = data
                     callback(null)
                 })
@@ -124,27 +165,13 @@ function buildUserProfiles(redis_id_keys, callback) {
     });
 }
 
-app.use('/list', function (req, res) {
-    res.set("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.set("Access-Control-Allow-Credentials", true);
-    let key = "3898767436_hashtags";
-    redis_client.zrevrange(key, 0, 9, 'withscores', function (err, data) {
-        if (err) throw err;
-        else res.send(listToJson(data))
-    });
-});
-
-
 app.use('/random', function (req, res) {
     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
     res.set("Access-Control-Allow-Credentials", true);
 
     redis_client.keys('*_id', function (err, keys) {
         if (err) throw err;
-        // if (keys.length > 2) {
-        //     keys.length = 3
-        // }
-        buildUserProfiles(keys, function (err, data) {
+        buildUserProfiles(keys, true, 4, function (err, data) {
             if (err) throw err
             else {
                 res.json(data)
@@ -157,15 +184,12 @@ app.use('/random', function (req, res) {
 function existsInSortedSet(key, topics, callback) {
     let exists = false;
     async.forEach(topics, function (topic, inner_callback) {
-        redis_client.zrevrange(key, 0, 9, 'withscores', function (err, data) {
+        redis_client.zrevrange(key, 0, 4, 'withscores', function (err, data) {
             let top10 = new Set(data)
             if (err) throw err;
             else {
                 if(top10.has(topic)) {
                     exists = true;
-                    // console.log(key);
-                    // console.log("topic: " + topic)
-                    // console.log(top10)
                 }
                 inner_callback(null)
             }
@@ -212,7 +236,38 @@ function searchTopics(topics, callback) {
             if (err) {
                 throw err
             } else {
-                buildUserProfiles(topic_keys, function (err, data) {
+                buildUserProfiles(topic_keys, true, 4, function (err, data) {
+                    if (err) throw err
+                    else {
+                        callback(null, data)
+                    }
+                })
+            }
+        });
+    });
+}
+
+function searchHashtags(hashtags, callback) {
+    redis_client.keys('*_id', function (err, keys) {
+        if (err) throw err;
+        let hashtag_keys = new Set();
+        async.forEach(keys, function (id_key, inner_callback) {
+            let id = id_key.split("_")[0]
+            async.waterfall([
+                function (callback) {
+                    existsInSortedSet(id + "_hashtags", hashtags, function(err, exists){
+                        if (exists) hashtag_keys.add(id + "_id")
+                        callback(null)
+                    })
+                },
+            ], function (err, result) {
+                inner_callback(null)
+            });
+        }, function (err) {
+            if (err) {
+                throw err
+            } else {
+                buildUserProfiles(hashtag_keys, true, 4, function (err, data) {
                     if (err) throw err
                     else {
                         callback(null, data)
@@ -231,28 +286,55 @@ app.use('/topics', function (req, res) {
     if(typeof(topics) == "string"){
         topics = topics.split()
     }
-    console.log(topics)
     if (!topics) res.json({})
-    searchTopics(topics, function (err, data) {
-        if (err) throw err
-        else res.json(data)
-    })
+    else{
+        searchTopics(topics, function (err, data) {
+            if (err) throw err
+            else res.json(data)
+        })
+    }
 });
 
-// app.use('/user', function (req, res) {
-//     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
-//    //gainarianafans, "1195954759842308096"
-//     let user = req.query.topics
-//     if(typeof(topics) == "string"){
-//         topics = topics.split()
-//     }
-//     console.log(topics)
-//     if (!topics) res.json({})
-//     searchTopics(topics, function (err, data) {
-//         if (err) throw err
-//         else res.json(data)
-//     })
-// });
+app.use('/hashtags', function (req, res) {
+    res.set("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.set("Access-Control-Allow-Credentials", true);
+   //gainarianafans, "1195954759842308096"
+    let hashtags = req.query.hashtags
+    if(typeof(hashtags) == "string"){
+        hashtags = hashtags.split()
+    }
+    if (!hashtags) res.json({})
+    else{
+        searchHashtags(hashtags, function (err, data) {
+            if (err) throw err
+            else res.json(data)
+        })
+    }
+});
+
+app.use('/getUser', function (req, res) {
+    res.set("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.set("Access-Control-Allow-Credentials", true);
+   //gainarianafans, "1195954759842308096"
+    let id = req.query.id
+    if(id){
+        buildUserProfiles([id], true, 9, function(err, data){
+            if (err) throw err
+            else{
+                res.json(data)
+            }
+        })
+    }
+    else{
+        let screen_name = req.query.name
+        buildUserProfiles([screen_name], false, 9, function(err, data){
+            if (err) throw err
+            else{
+                res.json(data)
+            }
+        }) 
+    }
+});
 
 
 // --------------------------------------SERVER
