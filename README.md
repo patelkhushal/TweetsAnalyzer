@@ -12,12 +12,14 @@ We use the Twitter API to interact with Twitter app in order to monitor users in
 specific periods of time. Twitter Profiler would rank the top n topics and top m hashtags of each user.
 We aim to make these parameterized and configurable.
 
-## Technologies used
+## Technologies Used
+![](https://img.icons8.com/color/48/000000/python.png) ![](https://cdn4.iconfinder.com/data/icons/redis-2/1451/Untitled-2-48.png) ![](https://img.icons8.com/color/48/000000/angularjs.png) ![](https://img.icons8.com/color/48/000000/nodejs.png) ![](https://img.icons8.com/color/48/000000/twitter.png)
+
 #### Back End Processing
-* Twitter API: To get tweets in real time
-* Python3: Uses pyspark, nltk, tweepy and sklearn libraries to perform sentiment analysis and calculate TF-IDF scores of each tweet
-* Apache Spark (pyspark): To perform real time analysis
-* Redis database: Non-relational (NoSql) database to save processed user profiles
+* <strong>Twitter API</strong>: To get tweets in real time
+* <strong>Python3</strong>: Uses pyspark, nltk, tweepy and sklearn libraries to perform sentiment analysis and calculate TF-IDF scores
+* <strong>Apache Spark (pyspark)</strong>: To perform real time analysis
+* <strong>Redis database</strong>: Non-relational (NoSql) database to save processed user profiles
 
 #### Web Application
 * Express JS Web Framework: Acts as back end for the web application and handles requests from front end Angular application
