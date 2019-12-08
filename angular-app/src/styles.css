@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+
+.form-control-borderless {
+  border: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+button{
+    color: #036434;
+    font-size: 14px;
+    border-radius: 12px;
+}
+  a:link {
+    text-decoration: none;
+    color: #036434;
+  }
+  
+  a:visited {
+    text-decoration: none;
+    color: #036434;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+    color: #036434;
+  }
+  
+  a:active {
+    text-decoration: underline;
+    color: #036434;
+  }
+  .active-cyan-3 input[type=text] {
+    border: 1px solid #4dd0e1;
+    box-shadow: 0 0 0 1px #4dd0e1;
+  }

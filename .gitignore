@@ -1,0 +1,15 @@
+# OS X Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.lnk
+*~
+#python and spark files
+__pycache__/
+checkpoint_TwitterApp/
+# NODE
+.node_modules
+node_modules
+*/node_modules
+/node_modules/*

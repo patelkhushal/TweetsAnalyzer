@@ -1,0 +1,39 @@
+<!-- Search form -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+  integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+<div class="container-fluid">
+  <br />
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <form class="card card-sm">
+        <div class="card-body row no-gutters align-items-center">
+          <div class="col-auto">
+            <i class="fas fa-search h4 text-body"></i>
+          </div>
+          <!--end of col-->
+          <div class="col">
+            <input [(ngModel)]="search_input" name="input_search" (keyup.enter)="submit_button_clicked()" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" >
+          </div>
+          <!--end of col-->
+          <div class="col-auto">
+            <button class="btn btn-lg btn-info" type='button' (click)="submit_button_clicked()">Search</button>
+          </div>
+          <!--end of col-->
+        </div>
+      </form>
+    </div>
+    <!--end of col-->
+  </div>
+  <br>
+  <div id="serach_terms_container" class="row justify-content-center">
+    <div *ngFor="let item of this.selected_topics" class="col-xs ml-2 align-self-center card text-white bg-info mb-3" style="display:inline-block;" (mouseover)="close_button.style.display='block'" (mouseout)="close_button.style.display='none'">
+      <!-- <div class='ml-2'> -->
+      <span class="card-body">{{item}}</span>
+      <button #close_button type="button" class="close" aria-label="Close" style="font-size: 15px;display: none;" (click)="delete_topic(item)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+    <!-- </div> -->
+  </div>
+</div>
+<router-outlet></router-outlet>
