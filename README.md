@@ -3,10 +3,14 @@
 This project aims to analyze tweets from different users and profile them accordingly.
 <br />
 
-Twitter Profiler monitors tweets in real time and performs the following three tasks on each tweet:
-* determining frequent hashtags 
-* performing sentiment analysis to determine whether the tweet is positive or negative
-* identifying major topics of the tweet
+Twitter Profiler monitors tweets in real time and for every twitter user profile and does the following
+
+* Obtain all the tweets of the user
+* Extract hashtags 
+* Perform Sentiment Analysis to determine whether the tweet is positive or negative
+* Identify major topics of the tweet
+
+This allows us to determine user trends, their likes, dislikes and things they tweet about more often. Sentiment Analysis also allows us to determine topics that user tweets negatively or positively.
 
 We use the Twitter API to interact with Twitter app in order to monitor users in certain regions for
 specific periods of time. Twitter Profiler would rank the top n topics and top m hashtags of each user.
