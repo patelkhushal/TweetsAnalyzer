@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   title = 'angular-app';
   search_input
   topics_query
-  mode
   constructor(private global: Global, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
@@ -71,7 +70,21 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/home'])
       }
     }
-    
+  }
+
+  reset_clicked(){
+    if(this.global.mode == "topics"){
+      console.log("in")
+      this.global.selected_topics = new Set()
+      console.log(this.global.selected_topics)
+    }
+    else if(this.global.mode == "hashtags"){
+      this.global.selected_hashtags = new Set()
+    }
+    else{
+      this.global.user_mode_user = ""
+    }
+    this.router.navigate(['home'])
   }
 
 }

@@ -4,7 +4,7 @@
   <br />
   <div class="container">
       <div class="row">
-          <div class="col col-lg-4 pl-4"><button type="button" #topicsMode class="btn btn-info">Reset</button></div>
+          <div class="col col-lg-4 pl-4"><button class="btn btn-info" (click)="reset_clicked()">Reset</button></div>
             <div class="col col-lg-4 btn-group" role="group" aria-label="Basic example">
                 <!-- <button type="button" #topicsMode class="btn btn-secondary" (click)="changeMode('topics')">Topics</button> -->
                 <div *ngIf="this.global.mode=='topics'; then topicsSelected else noTopics"></div>

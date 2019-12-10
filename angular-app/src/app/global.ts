@@ -7,5 +7,4 @@ export class Global {
   selected_hashtags = new Set();
   mode = "topics"
   user_mode_user
-  // query_result
 }

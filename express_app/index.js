@@ -7,6 +7,8 @@ const express = require('express');
 const session = require('express-session');
 var async = require('async');
 var redis = require("redis");
+var spawn = require("child_process").spawn;
+var fs = require('fs');
 
 var app = express();
 app.enable('trust proxy');
@@ -50,26 +52,26 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
         let user_profile_json = {}
         let id
         let screen_name
-        if(id_passed){
+        if (id_passed) {
             id = id_key.split("_")[0]
             user_profile_json["id"] = id
         }
-        else{
+        else {
             screen_name = id_key
         }
         async.waterfall([
-            function(callback){
-                if(screen_name){
+            function (callback) {
+                if (screen_name) {
                     redis_client.keys('*_screen_name', function (err, keys) {
                         if (err) throw err;
-                        async.forEach(keys, function(key, inner_callback){
-                            redis_client.get(key, function(err, data){
-                                if(data == screen_name){
+                        async.forEach(keys, function (key, inner_callback) {
+                            redis_client.get(key, function (err, data) {
+                                if (data == screen_name) {
                                     id = key.split("_")[0]
                                 }
                                 inner_callback(null)
                             })
-        
+
                         }, function (err) {
                             if (err) {
                                 throw err
@@ -81,7 +83,7 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
                         // id = keys[0].split("_")[0]
                     });
                 }
-                else{
+                else {
                     callback(null)
                 }
             },
@@ -160,7 +162,6 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
             throw err
         } else {
             callback(null, random_user_profiles)
-            // res.json(random_user_profiles)
         }
     });
 }
@@ -188,7 +189,7 @@ function existsInSortedSet(key, topics, callback) {
             let top10 = new Set(data)
             if (err) throw err;
             else {
-                if(top10.has(topic)) {
+                if (top10.has(topic)) {
                     exists = true;
                 }
                 inner_callback(null)
@@ -218,13 +219,13 @@ function searchTopics(topics, callback) {
                     })
                 },
                 function (callback) {
-                    existsInSortedSet(id + "_positive_topics", topics, function(err, exists){
+                    existsInSortedSet(id + "_positive_topics", topics, function (err, exists) {
                         if (exists) topic_keys.add(id + "_id")
                         callback(null)
                     })
                 },
                 function (callback) {
-                    existsInSortedSet(id + "_negative_topics", topics, function(err, exists){
+                    existsInSortedSet(id + "_negative_topics", topics, function (err, exists) {
                         if (exists) topic_keys.add(id + "_id")
                         callback(null)
                     })
@@ -255,7 +256,7 @@ function searchHashtags(hashtags, callback) {
             let id = id_key.split("_")[0]
             async.waterfall([
                 function (callback) {
-                    existsInSortedSet(id + "_hashtags", hashtags, function(err, exists){
+                    existsInSortedSet(id + "_hashtags", hashtags, function (err, exists) {
                         if (exists) hashtag_keys.add(id + "_id")
                         callback(null)
                     })
@@ -281,13 +282,12 @@ function searchHashtags(hashtags, callback) {
 app.use('/topics', function (req, res) {
     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
     res.set("Access-Control-Allow-Credentials", true);
-   //gainarianafans, "1195954759842308096"
     let topics = req.query.topics
-    if(typeof(topics) == "string"){
+    if (typeof (topics) == "string") {
         topics = topics.split()
     }
     if (!topics) res.json({})
-    else{
+    else {
         searchTopics(topics, function (err, data) {
             if (err) throw err
             else res.json(data)
@@ -298,13 +298,12 @@ app.use('/topics', function (req, res) {
 app.use('/hashtags', function (req, res) {
     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
     res.set("Access-Control-Allow-Credentials", true);
-   //gainarianafans, "1195954759842308096"
     let hashtags = req.query.hashtags
-    if(typeof(hashtags) == "string"){
+    if (typeof (hashtags) == "string") {
         hashtags = hashtags.split()
     }
     if (!hashtags) res.json({})
-    else{
+    else {
         searchHashtags(hashtags, function (err, data) {
             if (err) throw err
             else res.json(data)
@@ -315,25 +314,49 @@ app.use('/hashtags', function (req, res) {
 app.use('/getUser', function (req, res) {
     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
     res.set("Access-Control-Allow-Credentials", true);
-   //gainarianafans, "1195954759842308096"
     let id = req.query.id
-    if(id){
-        buildUserProfiles([id], true, 9, function(err, data){
+    if (id) {
+        buildUserProfiles([id], true, 9, function (err, data) {
             if (err) throw err
-            else{
+            else {
                 res.json(data)
             }
         })
     }
-    else{
+    else {
         let screen_name = req.query.name
-        buildUserProfiles([screen_name], false, 9, function(err, data){
+        buildUserProfiles([screen_name], false, 9, function (err, data) {
             if (err) throw err
-            else{
+            else {
                 res.json(data)
             }
-        }) 
+        })
     }
+});
+
+app.use('/generateProfile', function (req, res) {
+    res.set("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.set("Access-Control-Allow-Credentials", true);
+    let screen_name = req.query.screen_name
+
+    path = fs.realpathSync('../data-processing/try2.py', []);
+    console.log(path)
+    pyprog = spawn('python',[path, screen_name]);
+
+    pyprog.stdout.on('data', (data) => {
+        console.log(data.toString())
+        // buildUserProfiles([screen_name], false, 9, function (err, data) {
+        //     if (err) throw err
+        //     else {
+        //         res.json(data)
+        //     }
+        // })
+    });
+
+    pyprog.stderr.on('data', (data) => {
+
+        console.log(data.toString());
+    });
 });
 
 
