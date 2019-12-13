@@ -315,6 +315,7 @@ After building user profile, the script will save the results to a database whic
 <details>
   <summary><strong>Sentiment Analysis</strong></summary>
   
+  
 I am using a module called `vader_lexicon` from python's `nltk` library. The way this library works is, it looks at words like "hate", "love", "like", "dislike" and assign sentiments accordingly.
 
 For Example, a string:
@@ -327,7 +328,8 @@ Please see reference [1] for more info regarding this module.
 
 
 <details>
-  <summary><strong>TF-IDF scores</strong></summary>
+  <summary><strong>TF-IDF scores</strong></summary><br>
+
 
 TF-IDF is a mathematical formula which assigns "scores" to different words in a string. It would assign more weight to relevant words and less weight to common words like "I", "the", "is", "in", etc. 
 
