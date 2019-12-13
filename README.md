@@ -309,7 +309,31 @@ After receiving the Twitter id, the script kicks off `make_profile` method from 
 #### user_profile_builder.py
 This script is the brain of data processing. It is responsible for analyzing tweets from a user. It will build user profile by getting 3200 tweets of a user through Twitter API. It will then perform sentiment analysis on those tweets and get topics by leveraging sklearn tf-idf vectorizer.
 
+After building user profile, the script will save the results to a database which will later be used by our web application to display different user profiles.
+
+##### Sentiment Analysis
+I am using a module called `vader_lexicon` from python's `nltk` library. The way this library works is, it looks at words like "hate", "love", "like", "dislike" and assign sentiments accordingly.
+
+For Example, a string:
+"United Airlines has poor customer service"
+
+Vader lexicon will assign negative sentiment as we see the word "poor" which is linked to negative sentiment.
+
+Please see reference [1] for more info regarding this module. 
+
+##### TF-IDF scores
+
+TF-IDF is a mathematical formula which assigns "scores" to different words in a string. It would assign more weight to relevant words and less weight to common words like "I", "the", "is", "in", etc. 
+
+For example, consider previous string string:
+"United Airlines has poor customer service"
+
+Using sklearn's tf-idf library, we find that "United Airlines" and "customer service" are assigned more weight than other words. We use this library to extract topics out of a tweet.
+
+Please see reference [2] and [3] for more info regarding TF-IDF score and sklearn tf-idf library
+
 The script will determines user's frequent hashtags, topics that he/she generally tweets about and sentiments (positive or negative) for each of those topics. It will save the results in a redis database
+
 
 # WebApp
 We decided to build Web Application to visualize User Profiles and provide flexibility i.e, have different option available for user when searching through different user profiles
@@ -323,5 +347,12 @@ This file is responsible for retreiving data from the database and building user
 
 ## Front end
 Front end of the web application is built using Angular 8. Angular related files are available in `angular-app` directory
+
+## References
+[1] [https://www.nltk.org/api/nltk.sentiment.html](https://www.nltk.org/api/nltk.sentiment.html)
+
+[2] Juan Ramos. Using TF-IDF to Determine Word Relevance in Document Queries. Retrieved from [http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.121.1424&rep=rep1&type=pdf](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.121.1424&rep=rep1&type=pdf)
+
+[3] [https://scikit-learn.org/stable/modules/feature_extraction.html](https://scikit-learn.org/stable/modules/feature_extraction.html)
 
 
