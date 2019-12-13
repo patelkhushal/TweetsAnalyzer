@@ -314,6 +314,7 @@ After building user profile, the script will save the results to a database whic
 
 <details>
   <summary><strong>Sentiment Analysis</strong></summary>
+  
 I am using a module called `vader_lexicon` from python's `nltk` library. The way this library works is, it looks at words like "hate", "love", "like", "dislike" and assign sentiments accordingly.
 
 For Example, a string:
