@@ -334,7 +334,7 @@ TF-IDF is a mathematical formula which assigns "scores" to different words in a 
 For example, consider previous string string:
 "United Airlines has poor customer service"
 
-Using sklearn's tf-idf library, we find that "United Airlines" and "customer service" are assigned more weight than other words. We use this library to extract topics out of a tweet.
+Using `sklearn` `tf-idf` library, we find that "United Airlines" and "customer service" are assigned more weight than other words. We use this library to extract topics out of a tweet.
 
 Please see reference [2] and [3] for more info regarding TF-IDF score and sklearn tf-idf library
 </details>
