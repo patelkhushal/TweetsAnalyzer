@@ -307,11 +307,13 @@ This script actively listens for data coming in from `twitter_app.py` through po
 After receiving the Twitter id, the script kicks off `make_profile` method from `user_profile_builder.py`. It will keep repeating the process of getting twitter user id and executing make_profile from user_profile_builder.py
 
 #### user_profile_builder.py
-This script is the brain of data processing. It is responsible for analyzing tweets from a user. It will build user profile by getting 3200 tweets of a user through Twitter API. It will then perform sentiment analysis on those tweets and get topics by leveraging sklearn tf-idf vectorizer.
+This script is the brain of data processing. It is responsible for analyzing tweets from a user. It will build user profile by getting 3200 tweets of a user through Twitter API. It will then extract hashtags, perform sentiment analysis on those tweets and get topics by leveraging sklearn tf-idf vectorizer.
 
 After building user profile, the script will save the results to a database which will later be used by our web application to display different user profiles.
 
-##### Sentiment Analysis
+
+<details>
+  <summary><strong>Sentiment Analysis</strong></summary>
 I am using a module called `vader_lexicon` from python's `nltk` library. The way this library works is, it looks at words like "hate", "love", "like", "dislike" and assign sentiments accordingly.
 
 For Example, a string:
@@ -320,8 +322,11 @@ For Example, a string:
 Vader lexicon will assign negative sentiment as we see the word "poor" which is linked to negative sentiment.
 
 Please see reference [1] for more info regarding this module. 
+</details>
 
-##### TF-IDF scores
+
+<details>
+  <summary><strong>TF-IDF scores</strong></summary>
 
 TF-IDF is a mathematical formula which assigns "scores" to different words in a string. It would assign more weight to relevant words and less weight to common words like "I", "the", "is", "in", etc. 
 
@@ -331,9 +336,7 @@ For example, consider previous string string:
 Using sklearn's tf-idf library, we find that "United Airlines" and "customer service" are assigned more weight than other words. We use this library to extract topics out of a tweet.
 
 Please see reference [2] and [3] for more info regarding TF-IDF score and sklearn tf-idf library
-
-The script will determines user's frequent hashtags, topics that he/she generally tweets about and sentiments (positive or negative) for each of those topics. It will save the results in a redis database
-
+</details>
 
 # WebApp
 We decided to build Web Application to visualize User Profiles and provide flexibility i.e, have different option available for user when searching through different user profiles
