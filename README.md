@@ -13,7 +13,7 @@ For example, consider some user tweeted:
 
 Hashtag of tweet is #UnitedAirlines, sentiment is negative and major topics are UnitedAirlines and customer services
 
-Tweets Analyzer analyzes recent tweets of the user and build user profiles for different users. A user profile contains user’s top 10 hashtags, topics, and positive/negative topics along with their respective count. For example, in the sample user profile below we can see that #TEXAS has been mentioned in 92 of this user’s tweets. User profile also contains twitter user’s name, screen name, followers/following count and location.
+Tweets Analyzer analyzes recent tweets of the user and build user profiles for different users. A user profile contains user’s top 10 hashtags, topics, and positive/negative topics along with their respective count.
 
 Advertising companies can display personalized ads to the user based on his/her interests, hobbies, likes and dislikes. It can also help recruiters hire potential employees based on their interests in certain technologies. The system can also be used just by twitter users themselves to know what they tweet about the most.
 
