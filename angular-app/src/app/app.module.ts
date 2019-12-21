@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { QueryProfilesComponent } from './query-profiles/query-profiles.component';
+import { GenerateComponent } from './generate/generate.component';
 
 const urlMap: Routes =
   [
@@ -17,6 +18,7 @@ const urlMap: Routes =
     { path: 'home', component: HomeComponent },
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'query-profiles', component: QueryProfilesComponent },
+    { path: 'generate', component: GenerateComponent },
 
   ];
 
@@ -25,7 +27,8 @@ const urlMap: Routes =
     AppComponent,
     HomeComponent,
     UserProfileComponent,
-    QueryProfilesComponent
+    QueryProfilesComponent,
+    GenerateComponent
   ],
   imports: [
     BrowserModule,

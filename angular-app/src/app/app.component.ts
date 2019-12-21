@@ -27,6 +27,14 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/user-profile'], { queryParams: { "name": screen_name } })
       }
     }
+    else if(this.global.mode == "generate"){
+      if (this.search_input.length > 1) {
+        let screen_name = this.search_input
+        this.global.generate = screen_name
+        this.search_input = ""
+        this.router.navigate(['/generate'], { queryParams: { "screen_name": screen_name } })
+      }
+    }
     else {
       if (this.search_input.length > 1) {
         mode_set.add(this.search_input)
@@ -61,6 +69,9 @@ export class AppComponent implements OnInit {
       if(this.global.user_mode_user){
         this.router.navigate(['/user-profile'], { queryParams: { "name": this.global.user_mode_user } })
       }
+    }
+    else if(this.global.mode == "generate"){
+      // this.router.navigate(['/generate'])
     }
     else {
       if(mode_set && mode_set.size >= 1){

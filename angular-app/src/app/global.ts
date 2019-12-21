@@ -7,4 +7,6 @@ export class Global {
   selected_hashtags = new Set();
   mode = "topics"
   user_mode_user
+  generate
+  generated_user_profile
 }

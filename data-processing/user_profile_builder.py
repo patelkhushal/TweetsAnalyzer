@@ -17,10 +17,10 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import redis
 
 # twitter authentication keys. Replace with your own
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
+consumer_key = "CShhWAknTyUKglqRCDD85ukXi"
+consumer_secret = "iY60OQDQvwpxkNggbMhD89fc3XarT3V70wxjSuL4Yv9lKHME1O"
+access_token = "1063543816467214336-bAzfoT2bsgbB9J0RIT8pv0FD7RyaNy"
+access_token_secret = "3hPNcqrXEIZeDGuv8MvbrL8yvdITAEtCKXHxqWQ5RJsIa"
 
 # ==== setup twitter connection ====
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -47,16 +47,20 @@ additional_stop_words = ["a","about","above","after","again","against","ain","al
 stop_words = set(stopwords.words('english')).union(additional_stop_words)
 word_tokenizer = RegexpTokenizer(r'\w+')
 
-# This method takes expects twitter user id
-# It create user profile by processing 3200 tweets of <user_id> and saves analytics to database
+# This method expects twitter user id or twitter user screen name
+# It will create user profile by processing 3200 tweets of <user_id/screen_name> and save analytics to database
 # The method will get tf-idf scores and perform sentiment analysis of the tweets
 def make_profile(user_id):
     global user_id_str
-    user_id_str = str(user_id)
     user_tweet_object = api.get_user(user_id)
+    #determine if the passed argument is twitter id or screen name
+    if(is_number(str(user_id))):
+        user_id_str = str(user_id)
+    else:
+        user_id_str = str(user_tweet_object.id)
 
     #save basic user information to the database
-    r.set(user_id_str + "_id", user_id)
+    r.set(user_id_str + "_id", user_id_str)
     r.set(user_id_str + "_" + "name", user_tweet_object.name)
     r.set(user_id_str + "_" + "screen_name", user_tweet_object.screen_name)
     r.set(user_id_str + "_" + "profile_url", "https://twitter.com/" + user_tweet_object.screen_name)
@@ -68,8 +72,8 @@ def make_profile(user_id):
     # get all 3200 tweets by this user_id
     tweets = tweepy.Cursor(api.user_timeline, id=user_id, tweet_mode="extended").items()
     hashtags = list()  # to save hashtags of a user
-    all_tweets = list() #save 3200 user tweets
-    all_tweets_sentiment = list()
+    all_tweets = list() #save 3200 user tweets. stopwords will be excluded
+    all_tweets_sentiment = list() #will contains all the tweets without stopwords for sentiment analysis
 
     # Iterate over all user tweets
     for tweet in tweets:
@@ -84,7 +88,7 @@ def make_profile(user_id):
         all_tweets_sentiment.append(full_text)
         tweet_words = full_text.lower()
         #filter words in a tweet
-        filtered_tweet_words = [w for w in tweet_words.split() if not w.startswith("http") and len(w) > 2 and w not in stop_words]
+        filtered_tweet_words = [w for w in tweet_words.split() if not w.startswith("http") and len(w) > 2 and w not in stop_words] #exclude stop words, links (starts with http) and words of len <= 3
         tokens = word_tokenizer.tokenize(' '.join(filtered_tweet_words))
         all_tweets.append(' '.join(tokens))
 
@@ -150,6 +154,13 @@ def perform_sentiment_analysis(text):
 
 def tokenize(text):
     return word_tokenizer.tokenize(text)
+
+def is_number(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 #setup user profile
 # user_id = 1702156772

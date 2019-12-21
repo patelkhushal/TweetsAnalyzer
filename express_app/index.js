@@ -57,6 +57,7 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
             user_profile_json["id"] = id
         }
         else {
+            // console.log("in2")
             screen_name = id_key
         }
         async.waterfall([
@@ -67,16 +68,20 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
                         async.forEach(keys, function (key, inner_callback) {
                             redis_client.get(key, function (err, data) {
                                 if (data == screen_name) {
+                                    // console.log(data)
+                                    // console.log(screen_name)
                                     id = key.split("_")[0]
                                 }
                                 inner_callback(null)
                             })
 
                         }, function (err) {
+                            // console.log("in3")
                             if (err) {
                                 throw err
                             } else {
                                 user_profile_json["id"] = id
+                                // console.log(user_profile_json["id"])
                                 callback(null)
                             }
                         });
@@ -90,6 +95,7 @@ function buildUserProfiles(redis_id_keys, id_passed, n, callback) {
             function (callback) {
                 getKey(id + "_name", function (err, data) {
                     user_profile_json["name"] = data
+                    // console.log(user_profile_json["name"])
                     callback(null)
                 })
             },
@@ -282,6 +288,7 @@ function searchHashtags(hashtags, callback) {
 app.use('/topics', function (req, res) {
     res.set("Access-Control-Allow-Origin", "http://localhost:4200");
     res.set("Access-Control-Allow-Credentials", true);
+    res.set("Access-Control-Allow-Credentials", true);
     let topics = req.query.topics
     if (typeof (topics) == "string") {
         topics = topics.split()
@@ -345,17 +352,23 @@ app.use('/generateProfile', function (req, res) {
 
     pyprog.stdout.on('data', (data) => {
         console.log(data.toString())
-        // buildUserProfiles([screen_name], false, 9, function (err, data) {
-        //     if (err) throw err
-        //     else {
-        //         res.json(data)
-        //     }
-        // })
+        if(data.toString().trim() == "error"){
+            res.json([{}])
+        }
+        else{
+            res.json([{"request": "success"}])
+            // buildUserProfiles([screen_name], false, 9, function (err, data) {
+            //     console.log(data)
+            //     if (err) throw err
+            //     else {
+            //         res.json(data)
+            //     }
+            // })
+        }
     });
 
     pyprog.stderr.on('data', (data) => {
-
-        console.log(data.toString());
+        console.log(data.toString())
     });
 });
 

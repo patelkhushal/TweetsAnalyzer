@@ -21,10 +21,10 @@ from tweepy import API
 from tweepy import Stream
 
 # Replace the values below with yours
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
+consumer_key = "CShhWAknTyUKglqRCDD85ukXi"
+consumer_secret = "iY60OQDQvwpxkNggbMhD89fc3XarT3V70wxjSuL4Yv9lKHME1O"
+access_token = "1063543816467214336-bAzfoT2bsgbB9J0RIT8pv0FD7RyaNy"
+access_token_secret = "3hPNcqrXEIZeDGuv8MvbrL8yvdITAEtCKXHxqWQ5RJsIa"
 
 
 class TweetListener(StreamListener):
@@ -86,14 +86,11 @@ track = ['crypto', 'ethereum', 'bitcoin', 'blockchain', 'cryptocurrency', 'btc',
          'gop', 'trump', 'vote', 'house', 'congress', 'senate', 'law', 'politicians', 'liberal', 'stem', 'computer science',
          'javascript', 'django', 'webapps', 'mobileapps', 'software', 'apple', 'iphone', 'iphonex', 'macbook', 'ios', 'macos', 'siri', 'imac',
          'applemusic', 'itunes', 'stevejobs', 'timcook', 'technology', 'innovation', 'future', 'cloud', 'tech', 'facebook', 'google', 'iot', 'app',
-         'career', 'marvel', 'dc', 'superman', 'batman', 'avengers', 'justiceleague', 'spiderman', 'superhero', 'superheroes', 'wonder woman', 'blackwidow',
-         'playstation', 'games', 'fortnite', 'witcher', 'got', 'pubg', 'ps4', 'ps5', 'xbox', 'stadia', 'console', 'pc', 'videogames', 'movies',
-         'starwars', 'mandalorian', 'babyyoda', 'yoda', 'hollywood', 'netflix', 'prime', 'hulu', 'disney+', 'actors', 'actress', 'music', 'cat', 'cats', 'dogs'
-         'jazz', 'rock', 'pop', 'country', 'billboards', 'guitar', 'culture', 'anthropology', 'university', 'lawyer', 'humanity', 'art', 'arts',
-         'mathematics', 'AI', 'Engineering', 'Computer', 'IT', 'Nanotechnology', 'NASA', 'Sputnik', 'space', 'astronomy', 'programming', 'java',
-         'python', 'ruby', 'c', 'c++', 'javascript', 'js', 'angular', 'reactjs', 'vuejs', 'golang', 'tesla', 'elon musk', 'iot', 'google home', 'alexa'
-         'car', 'cars', 'honda', 'toyota', 'chevrolet', 'chevy', 'sedan', 'suv', 'sports', 'nissan', 'football', 'blue jays', 'cn tower', 'health', 'lifestyle'
-         'dog', 'puppy', 'corporate', 'walmart', 'costco', 'toronto', 'canada', 'downtown toronto', 'downtown', 'trudeau', 'amazon', 'jeff bezos','iron man',
+         'career', 'marvel', 'dc', 'superman', 'batman', 'avengers', 'justiceleague', 'spiderman', 'superhero', 'superheroes', 'wonder woman', 'blackwidow', 
+         'cat', 'cats', 'dogs', 'anthropology', 'university',
+         'mathematics', 'AI', 'Engineering', 'Computer', 'IT', 'Nanotechnology', 'NASA', 'space', 'astronomy', 'programming', 'java',
+         'python', 'ruby', 'c', 'c++', 'javascript', 'js', 'angular', 'reactjs', 'vuejs', 'golang', 'tesla', 'elon musk', 'iot', 'google home', 'alexa' 
+         'blue jays', 'cn tower', 'health', 'toronto', 'canada', 'downtown toronto', 'downtown', 'trudeau', 'amazon',
           'cnn', 'bbc', 'news', 'laptop', 'macbook', 'mac', 'oneplus', 'iphone', 'huawei', 'lg', 'samsung', 'phone']
 language = ['en']
 
