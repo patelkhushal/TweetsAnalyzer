@@ -16,7 +16,7 @@ port = 9009
 # connect to the server on local computer 
 s.connect(('localhost', port)) 
 i = 0
-while(i < 10):
+while(i < 10): #change this condition as needed
     s.send(b'send') #signal server to send data
     data = s.recv(1024) # receive data from the server 
     user_id = int(data.decode())

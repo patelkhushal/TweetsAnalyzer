@@ -1,7 +1,7 @@
 """
     This script connects to Twitter Streaming API, gets tweets, extracts unique user id
     and forwards them through a local connection in port 9009. That stream is
-    meant to be read by a spark app for processing. 
+    meant to be read by a twitter client for processing. 
 
     run:
         python twitter_app.py
@@ -21,10 +21,10 @@ from tweepy import API
 from tweepy import Stream
 
 # Replace the values below with yours
-consumer_key = "CShhWAknTyUKglqRCDD85ukXi"
-consumer_secret = "iY60OQDQvwpxkNggbMhD89fc3XarT3V70wxjSuL4Yv9lKHME1O"
-access_token = "1063543816467214336-bAzfoT2bsgbB9J0RIT8pv0FD7RyaNy"
-access_token_secret = "3hPNcqrXEIZeDGuv8MvbrL8yvdITAEtCKXHxqWQ5RJsIa"
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
 
 
 class TweetListener(StreamListener):
