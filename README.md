@@ -1,20 +1,21 @@
 # Twitter User Profiler
 
-This project aims to analyze tweets from different users and profile them accordingly.
-<br />
+Tweets Analyzer analyzes tweets from different users and profile them based on their tweets. Tweets Analyzer monitors tweets in real time and for every twitter user, does the following:
 
-Twitter Profiler monitors tweets in real time and for every twitter user, does the following:
+* obtain all the tweets of the user
+* extract hashtags 
+* perform Sentiment Analysis to determine whether the tweet is positive or negative
+* identify major topics of the tweet
 
-* Obtain all the tweets of the user
-* Extract hashtags 
-* Perform Sentiment Analysis to determine whether the tweet is positive or negative
-* Identify major topics of the tweet
+For example, consider some user tweeted:
 
-This allows us to determine user trends, their likes, dislikes and things they tweet about more often. Sentiment Analysis also allows us to determine topics that user tweets negatively or positively.
+“#UnitedAirlines has poor customer service”
 
-We use the Twitter API to interact with Twitter app in order to monitor users in certain regions for
-specific periods of time. Twitter Profiler would rank the top n topics and top m hashtags of each user.
-We aim to make these parameterized and configurable.
+Hashtag of tweet is #UnitedAirlines, sentiment is negative and major topics are UnitedAirlines and customer services
+
+Tweets Analyzer analyzes recent tweets of the user and build user profiles for different users. A user profile contains user’s top 10 hashtags, topics, and positive/negative topics along with their respective count. For example, in the sample user profile below we can see that #TEXAS has been mentioned in 92 of this user’s tweets. User profile also contains twitter user’s name, screen name, followers/following count and location.
+
+Advertising companies can display personalized ads to the user based on his/her interests, hobbies, likes and dislikes. It can also help recruiters hire potential employees based on their interests in certain technologies. The system can also be used just by twitter users themselves to know what they tweet about the most.
 
 ## Technologies Used
 ![](https://img.icons8.com/color/48/000000/python.png) ![](https://cdn4.iconfinder.com/data/icons/redis-2/1451/Untitled-2-48.png) ![](https://img.icons8.com/color/48/000000/angularjs.png) ![](https://img.icons8.com/color/48/000000/nodejs.png) ![](https://img.icons8.com/color/48/000000/twitter.png)
